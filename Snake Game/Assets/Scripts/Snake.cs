@@ -84,18 +84,26 @@ public class Snake : MonoBehaviour
         for(int i = 0; i <= xSize; i++)
         {
             GameObject borderBottom = Instantiate(block) as GameObject;
+            borderBottom.GetComponentInChildren<SpriteRenderer>().sprite = borderSprite;
+            borderBottom.GetComponent<MeshRenderer>().enabled = false;
             borderBottom.GetComponent<Transform>().position = new Vector3(i-xSize/2, -ySize/2, 0);
 
             GameObject borderTop = Instantiate(block) as GameObject;
+            borderTop.GetComponentInChildren<SpriteRenderer>().sprite = borderSprite;
+            borderTop.GetComponent<MeshRenderer>().enabled = false;
             borderTop.GetComponent<Transform>().position = new Vector3(i - xSize / 2, ySize-ySize / 2, 0);
         }
 
         for(int i = 0; i <= ySize; i++)
         {
             GameObject borderRight = Instantiate(block) as GameObject;
+            borderRight.GetComponentInChildren<SpriteRenderer>().sprite = borderSprite;
+            borderRight.GetComponent<MeshRenderer>().enabled = false;
             borderRight.GetComponent<Transform>().position = new Vector3(-xSize/2, i-(ySize/2), 0);
 
             GameObject borderLeft = Instantiate(block)as GameObject;
+            borderLeft.GetComponentInChildren<SpriteRenderer>().sprite = borderSprite;
+            borderLeft.GetComponent<MeshRenderer>().enabled = false;
             borderLeft.GetComponent<Transform>().position = new Vector3(xSize-(xSize/2), i-(ySize/2), 0);
         }
     }

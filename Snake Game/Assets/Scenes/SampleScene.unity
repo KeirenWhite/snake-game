@@ -386,8 +386,8 @@ MonoBehaviour:
   foodMaterial: {fileID: 2100000, guid: 60ec5b20ea742f84cacb90749d78f9fb, type: 2}
   headSprite: {fileID: 2988162510636322469, guid: b9c0df71113ebca4ebb9e32ee760e326, type: 3}
   tailSprite: {fileID: -8413078877067141419, guid: 59b7d0436f1c5964b86f4638bdad89d6, type: 3}
-  foodSprite: {fileID: 8150299240178823625, guid: dbc0082f3fdae2a4780671288c003d76, type: 3}
-  borderSprite: {fileID: 0}
+  foodSprite: {fileID: -5557288778908987489, guid: 8d54ae6fb3504374a8e7a5b7ef42c5e3, type: 3}
+  borderSprite: {fileID: -1273934672449680531, guid: 74da2c43db1752a4fa293cafa89783ff, type: 3}
   swipeThreshold: 50
 --- !u!1 &619394800
 GameObject:
