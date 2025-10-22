@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using System.Collections;
 
 public class Snake : MonoBehaviour
 {
@@ -11,8 +12,10 @@ public class Snake : MonoBehaviour
     private GameObject head;
     //public Sprite headSprite;
     private GameObject food;
+    private GameObject cactus;
+    List<GameObject> activeCacti;
     public Material headMaterial, tailMaterial, foodMaterial;
-    public Sprite headSprite, tailSprite, foodSprite, borderSprite;
+    public Sprite headSprite, tailSprite, foodSprite, borderSprite, cactusSprite, grownCactusSprite;
     List<GameObject> tail;
     private Vector2 startTouchPos;
     private Vector2 endTouchPos;
@@ -22,12 +25,18 @@ public class Snake : MonoBehaviour
     private bool left = false;
     private bool right = true;
     private int headRotation = 0;
-
+    public float cactusSpawnTime = 5f;
+    public float cactusGrowTime = 5f;
     [SerializeField] private float swipeThreshold = 50f;
 
     private Vector2 dir;
     private float passedTime, timeBetweenMovements;
-    
+    void Awake()
+    {
+        if (activeCacti == null)
+            activeCacti = new List<GameObject>();
+    }
+
     private void Start()
     {
         timeBetweenMovements = 0.2f;
@@ -35,7 +44,26 @@ public class Snake : MonoBehaviour
         CreateGrid();
         CreatePlayer();
         SpawnFood();
+        StartCoroutine(CactusCoroutine());
+        //SpawnCactus();
         block.SetActive(false);
+    }
+
+    IEnumerator CactusCoroutine()
+    {
+        yield return new WaitForSeconds(cactusSpawnTime);
+        SpawnCactus();
+    }
+
+    IEnumerator CactusGrowCoroutine()
+    {
+        yield return new WaitForSeconds(cactusGrowTime);
+        cactus.GetComponentInChildren<SpriteRenderer>().sprite = grownCactusSprite;
+        if (cactus != null)
+        {
+            activeCacti.Add(cactus);
+            StartCoroutine(CactusCoroutine());
+        }        
     }
 
     private Vector2 GetRandomPos()
@@ -47,6 +75,7 @@ public class Snake : MonoBehaviour
     {
         bool isInHead = spawnPos.x == head.transform.position.x && spawnPos.y == head.transform.position.y;
         bool isInTail = false;
+       
         foreach (var item in tail)
         {
             if(item.transform.position.x == spawnPos.x && item.transform.position.y == spawnPos.y)
@@ -57,10 +86,36 @@ public class Snake : MonoBehaviour
         return isInHead || isInTail;   
     }
 
+    private bool ContainedInFood(Vector2 spawnPos)
+    {
+        bool isInFood = spawnPos.x == food.transform.position.x && spawnPos.y == food.transform.position.y;
+        
+        
+        return isInFood;
+    }
+
+    private bool ContainedInCactus(Vector2 spawnPos)
+    {
+        
+        if (cactus == null)
+        {           
+            return false;
+        }
+
+        bool isInCactus = false;
+
+        
+        if (spawnPos.x == cactus.transform.position.x && spawnPos.y == cactus.transform.position.y)
+        {
+            isInCactus = true;
+        }
+
+        return isInCactus;
+    }
     private void SpawnFood()
     {
         Vector2 spawnPos = GetRandomPos();
-        while (ContainedInSnake(spawnPos))
+        while (ContainedInSnake(spawnPos) || ContainedInCactus(spawnPos))
         {
             spawnPos = GetRandomPos();
         }
@@ -70,6 +125,22 @@ public class Snake : MonoBehaviour
         food.GetComponent<MeshRenderer>().enabled = false;
         food.SetActive(true);
     }
+
+    private void SpawnCactus()
+    {       
+        Vector2 spawnPos = GetRandomPos();
+        while (ContainedInSnake(spawnPos) || ContainedInFood(spawnPos))
+        {
+            spawnPos = GetRandomPos();
+        }
+        cactus = Instantiate(block);
+        cactus.transform.position = new Vector3(spawnPos.x, spawnPos.y, 0);
+        cactus.GetComponentInChildren<SpriteRenderer>().sprite = cactusSprite;
+        cactus.GetComponent<MeshRenderer>().enabled = false;
+        cactus.SetActive(true);
+        StartCoroutine(CactusGrowCoroutine());
+    }
+
     private void CreatePlayer()
     {
         head = Instantiate(block) as GameObject;
@@ -244,7 +315,24 @@ public class Snake : MonoBehaviour
                     GameOver();
                 }
             }
-            if(newPosition.x == food.transform.position.x && newPosition.y == food.transform.position.y)
+
+            //check collision with cactus
+            if (activeCacti != null)
+            {
+                foreach (var item in activeCacti)
+                {
+                    if (item == null)
+                        continue; 
+
+                    if (item.transform.position == newPosition)
+                    {
+                        GameOver();
+                        break;
+                    }
+                }
+            }
+
+            if (newPosition.x == food.transform.position.x && newPosition.y == food.transform.position.y)
             {
                 GameObject newTile = Instantiate(block);
                 newTile.SetActive(true);
