@@ -58,6 +58,7 @@ public class Snake : MonoBehaviour
     IEnumerator CactusGrowCoroutine()
     {
         yield return new WaitForSeconds(cactusGrowTime);
+        cactus.GetComponentInChildren<SpriteRenderer>().transform.localScale /= 1.5f;
         cactus.GetComponentInChildren<SpriteRenderer>().sprite = grownCactusSprite;
         if (cactus != null)
         {
@@ -112,10 +113,31 @@ public class Snake : MonoBehaviour
 
         return isInCactus;
     }
+
+    private bool ContainedInGrownCacti(Vector2 spawnPos)
+    {
+        if (activeCacti == null)
+        {
+            return false;
+        }
+
+        bool isInGrownCacti = false;
+
+        foreach (var item in activeCacti)
+        {
+            if (item.transform.position.x == spawnPos.x && item.transform.position.y == spawnPos.y)
+            {
+                isInGrownCacti = true;
+            }
+        }
+        return isInGrownCacti;
+    }
+
+    
     private void SpawnFood()
     {
         Vector2 spawnPos = GetRandomPos();
-        while (ContainedInSnake(spawnPos) || ContainedInCactus(spawnPos))
+        while (ContainedInSnake(spawnPos) || ContainedInCactus(spawnPos) || ContainedInGrownCacti(spawnPos))
         {
             spawnPos = GetRandomPos();
         }
@@ -129,13 +151,14 @@ public class Snake : MonoBehaviour
     private void SpawnCactus()
     {       
         Vector2 spawnPos = GetRandomPos();
-        while (ContainedInSnake(spawnPos) || ContainedInFood(spawnPos))
+        while (ContainedInSnake(spawnPos) || ContainedInFood(spawnPos) || ContainedInGrownCacti(spawnPos))
         {
             spawnPos = GetRandomPos();
         }
         cactus = Instantiate(block);
         cactus.transform.position = new Vector3(spawnPos.x, spawnPos.y, 0);
         cactus.GetComponentInChildren<SpriteRenderer>().sprite = cactusSprite;
+        cactus.GetComponentInChildren<SpriteRenderer>().transform.localScale *= 2f;
         cactus.GetComponent<MeshRenderer>().enabled = false;
         cactus.SetActive(true);
         StartCoroutine(CactusGrowCoroutine());

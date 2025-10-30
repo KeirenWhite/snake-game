@@ -388,8 +388,8 @@ MonoBehaviour:
   tailSprite: {fileID: -8413078877067141419, guid: 59b7d0436f1c5964b86f4638bdad89d6, type: 3}
   foodSprite: {fileID: -5557288778908987489, guid: 8d54ae6fb3504374a8e7a5b7ef42c5e3, type: 3}
   borderSprite: {fileID: -1273934672449680531, guid: 74da2c43db1752a4fa293cafa89783ff, type: 3}
-  cactusSprite: {fileID: 8150299240178823625, guid: dbc0082f3fdae2a4780671288c003d76, type: 3}
-  grownCactusSprite: {fileID: -8290511073606306512, guid: 93aa7b21bd54c9b489bb837c0c493a8c, type: 3}
+  cactusSprite: {fileID: -7697337597135434965, guid: 8babd08f95f076f4eae43b4a4f4a3330, type: 3}
+  grownCactusSprite: {fileID: -1312370090834129591, guid: 382358c292fbf924fa3fc6d525f219ef, type: 3}
   cactusSpawnTime: 5
   cactusGrowTime: 5
   swipeThreshold: 50
