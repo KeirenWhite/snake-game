@@ -28,6 +28,9 @@ public class Snake : MonoBehaviour
     public float cactusSpawnTime = 5f;
     public float cactusGrowTime = 5f;
     [SerializeField] private float swipeThreshold = 50f;
+    public QuestionManager questionManager;
+
+    private bool isPaused = false;
 
     private Vector2 dir;
     private float passedTime, timeBetweenMovements;
@@ -268,6 +271,9 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
+        if (isPaused)
+            return;
+
         if (right == true)
         {
             headRotation = 0;
@@ -372,6 +378,9 @@ public class Snake : MonoBehaviour
                 //head.GetComponent<MeshRenderer>().material = headMaterial;
                 //when questions are added, incorrect answers will start a for each loop where it will run the code above for the equivalent of whatever the incorrect in a row streak is at
                 SpawnFood();
+                questionManager.PauseAll(true);
+                questionManager.questionPanel.SetActive(true);
+                questionManager.GetQuestion();
             }
             else
             {
@@ -393,5 +402,12 @@ public class Snake : MonoBehaviour
             }
             
         }
+    }
+
+    public void Pause(bool pause)
+    {
+        isPaused = pause;
+        
+
     }
 }
