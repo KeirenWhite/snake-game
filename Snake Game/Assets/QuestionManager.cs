@@ -76,26 +76,39 @@ public class QuestionManager : MonoBehaviour
         {
             /*managerAudioSource.clip = correctSound;
             managerAudioSource.Play();*/
+            
             correctResponse.SetActive(true);
+            snake.RemoveSegment();
             
         }
         else
         {
             /*managerAudioSource.clip = incorrectSound;
             managerAudioSource.Play();*/
+            
             incorrectResponse.SetActive(true);
+            snake.wrongStreak++;
+            snake.AddSegment();
         }
+    }
+    
+    IEnumerator WaitTime()
+    {
+        yield return new WaitForSeconds(.1f);
+        PauseAll(false);
     }
 
     private void ContinueAfterQuestion()
     {
         /*managerAudioSource.clip = nextButtonPress;
         managerAudioSource.Play();*/
-        PauseAll(false);
+        
         questionPanel.SetActive(false);
         correctResponse.SetActive(false);
         incorrectResponse.SetActive(false);
         questionUI.SetActive(false);
+        StartCoroutine(WaitTime());
+        
     }
 
     public void PauseAll(bool pause)

@@ -409,6 +409,7 @@ MonoBehaviour:
   cactusGrowTime: 5
   swipeThreshold: 50
   questionManager: {fileID: 707739525}
+  wrongStreak: 0
 --- !u!114 &527830637 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5530762432259204103, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
@@ -688,6 +689,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9933854075454939, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
+      propertyPath: m_text
+      value: Incorrect you choked on the food and gained 1 segment...
+      objectReference: {fileID: 0}
     - target: {fileID: 2076630212366176115, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -697,6 +702,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3757615685835309767, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306128731334717692, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -788,6 +797,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4644615472694339227, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -8413078877067141419, guid: 59b7d0436f1c5964b86f4638bdad89d6, type: 3}
     - target: {fileID: 4950231288007163404, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -807,6 +820,10 @@ PrefabInstance:
     - target: {fileID: 7040317424133405121, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167662583568567041, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
+      propertyPath: m_text
+      value: You lost 1 segment!
       objectReference: {fileID: 0}
     - target: {fileID: 8505390319792697185, guid: e1ec03b95e83e1e43b57467963b7c841, type: 3}
       propertyPath: m_text

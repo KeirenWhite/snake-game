@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using System.Collections;
+using System.Globalization;
 
 public class Snake : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class Snake : MonoBehaviour
     public QuestionManager questionManager;
 
     private bool isPaused = false;
+    public int wrongStreak = 0;
 
     private Vector2 dir;
     private float passedTime, timeBetweenMovements;
@@ -207,13 +209,16 @@ public class Snake : MonoBehaviour
 
     private void DetectSwipe()
     {
+        if (isPaused) 
+            return;
+
         Vector2 swipeDelta = endTouchPos - startTouchPos;
 
         if (swipeDelta.magnitude > swipeThreshold)
         {           
             if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
             {
-                if (swipeDelta.x > 0)
+                if (swipeDelta.x > 0 && !isPaused)
                 {
                     Debug.Log("Swipe Right");
                     dir = Vector2.right;
@@ -226,19 +231,23 @@ public class Snake : MonoBehaviour
 
                 else
                 {
-                    Debug.Log("Swipe Left");
-                    dir = Vector2.left;
-                    left = true;
-                    down = false;
-                    up = false;
-                    right = false;
-                    head.GetComponentInChildren<Transform>().rotation = Quaternion.Euler(0, 0, -180);
+                    if (!isPaused)
+                    {
+                        Debug.Log("Swipe Left");
+                        dir = Vector2.left;
+                        left = true;
+                        down = false;
+                        up = false;
+                        right = false;
+                        head.GetComponentInChildren<Transform>().rotation = Quaternion.Euler(0, 0, -180);
+                    }
+                    
                 }
                     
             }
             else
             {
-                if (swipeDelta.y > 0)
+                if (swipeDelta.y > 0 && !isPaused)
                 {
                     Debug.Log("Swipe Up");
                     dir = Vector2.up;
@@ -251,13 +260,17 @@ public class Snake : MonoBehaviour
 
                 else
                 {
-                    Debug.Log("Swipe Down");
-                    dir = Vector2.down;
-                    down = true;
-                    right = false;
-                    left = false;
-                    up=false;
-                    head.GetComponentInChildren<Transform>().rotation = Quaternion.Euler(0, 0, -90);
+                    if (!isPaused)
+                    {
+                        Debug.Log("Swipe Down");
+                        dir = Vector2.down;
+                        down = true;
+                        right = false;
+                        left = false;
+                        up = false;
+                        head.GetComponentInChildren<Transform>().rotation = Quaternion.Euler(0, 0, -90);
+                    }
+                    
                 }
                     
             }
@@ -311,12 +324,12 @@ public class Snake : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isPaused)
         {
             startTouchPos = Input.mousePosition;
         }
             
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && !isPaused)
         {
             endTouchPos = Input.mousePosition;
             DetectSwipe();
@@ -363,7 +376,7 @@ public class Snake : MonoBehaviour
 
             if (newPosition.x == food.transform.position.x && newPosition.y == food.transform.position.y)
             {
-                GameObject newTile = Instantiate(block);
+                /*GameObject newTile = Instantiate(block);
                 newTile.SetActive(true);
                 newTile.transform.position = food.transform.position;
                 DestroyImmediate(food);
@@ -374,10 +387,10 @@ public class Snake : MonoBehaviour
                 head = newTile;
                 head.GetComponentInChildren<SpriteRenderer>().sprite = headSprite;
                 head.GetComponentInChildren<Transform>().rotation = Quaternion.Euler(0, 0, headRotation);
-                head.GetComponent<MeshRenderer>().enabled = false;
+                head.GetComponent<MeshRenderer>().enabled = false;*/
                 //head.GetComponent<MeshRenderer>().material = headMaterial;
-                //when questions are added, incorrect answers will start a for each loop where it will run the code above for the equivalent of whatever the incorrect in a row streak is at
-                SpawnFood();
+                //AddSegment();
+                
                 questionManager.PauseAll(true);
                 questionManager.questionPanel.SetActive(true);
                 questionManager.GetQuestion();
@@ -409,5 +422,45 @@ public class Snake : MonoBehaviour
         isPaused = pause;
         
 
+    }
+
+    public void AddSegment()
+    {
+        for(int i = 0; i < wrongStreak; i++)
+        {
+            GameObject newTile = Instantiate(block);
+            newTile.SetActive(true);
+            newTile.transform.position = food.transform.position;
+
+            head.GetComponent<MeshRenderer>().enabled = true;
+            head.GetComponent<MeshRenderer>().material = headMaterial;
+            head.GetComponentInChildren<SpriteRenderer>().sprite = tailSprite;
+            tail.Add(head);
+            head = newTile;
+            head.GetComponentInChildren<SpriteRenderer>().sprite = headSprite;
+            head.GetComponentInChildren<Transform>().rotation = Quaternion.Euler(0, 0, headRotation);
+            head.GetComponent<MeshRenderer>().enabled = false;
+        }
+        
+        DestroyImmediate(food);
+        SpawnFood();
+    }
+
+    public void RemoveSegment()
+    {
+        if (tail != null && tail.Count > 0)
+        {
+            tail[0].GetComponentInChildren<SpriteRenderer>().sprite = null;
+            tail.Remove(tail[0]);
+            DestroyImmediate(food);
+            SpawnFood();
+        }
+        else
+        {
+            DestroyImmediate(food);
+            SpawnFood();
+        }
+        
+        
     }
 }
