@@ -23,10 +23,9 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private Button option4;
     private TextMeshProUGUI optionText4;
     [SerializeField] private GameObject correctResponse;
-    //[SerializeField] private TextMeshProUGUI powerupName;
-    //[SerializeField] private Image powerupIcon;
     [SerializeField] private GameObject incorrectResponse;
-    //[SerializeField] private List<Sprite> powerupIcons;
+    public TMP_Text incorrectText;
+    
 
     [Header("Questions")]
     [SerializeField] private List<Question> questions;
@@ -78,6 +77,7 @@ public class QuestionManager : MonoBehaviour
             managerAudioSource.Play();*/
             
             correctResponse.SetActive(true);
+            snake.wrongStreak = 0;
             snake.RemoveSegment();
             
         }
@@ -88,6 +88,7 @@ public class QuestionManager : MonoBehaviour
             
             incorrectResponse.SetActive(true);
             snake.wrongStreak++;
+            incorrectText.text = $"Incorrect, you choked on the food... You answered {snake.wrongStreak} questions wrong in a row and you gain {snake.wrongStreak} segments.";
             snake.AddSegment();
         }
     }
