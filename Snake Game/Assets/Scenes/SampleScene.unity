@@ -404,7 +404,7 @@ MonoBehaviour:
   foodSprite: {fileID: -5557288778908987489, guid: 8d54ae6fb3504374a8e7a5b7ef42c5e3, type: 3}
   borderSprite: {fileID: -1273934672449680531, guid: 74da2c43db1752a4fa293cafa89783ff, type: 3}
   cactusSprite: {fileID: -7697337597135434965, guid: 8babd08f95f076f4eae43b4a4f4a3330, type: 3}
-  grownCactusSprite: {fileID: -1312370090834129591, guid: 382358c292fbf924fa3fc6d525f219ef, type: 3}
+  grownCactusSprite: {fileID: -1664626528550286571, guid: 332ab9408b170764584a66ca3c97680f, type: 3}
   cactusSpawnTime: 5
   cactusGrowTime: 5
   swipeThreshold: 50
