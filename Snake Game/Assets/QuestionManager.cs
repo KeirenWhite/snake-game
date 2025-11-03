@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -25,12 +26,15 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private GameObject correctResponse;
     [SerializeField] private GameObject incorrectResponse;
     public TMP_Text incorrectText;
+    public TMP_Text correctText;
     
 
     [Header("Questions")]
     [SerializeField] private List<Question> questions;
     private Question currentQuestion;
     private int questionIndex = 0;
+
+    public bool cactusQuestion = false;
 
     private void Awake()
     {
@@ -75,21 +79,42 @@ public class QuestionManager : MonoBehaviour
         {
             /*managerAudioSource.clip = correctSound;
             managerAudioSource.Play();*/
+
+            if (!cactusQuestion)
+            {
+                correctResponse.SetActive(true);
+                snake.wrongStreak = 0;
+                correctText.text = "Correct! You lost 1 segment!";
+                snake.RemoveSegment();
+            }
+            else
+            {
+                cactusQuestion = false;
+                correctResponse.SetActive(true);
+                correctText.text = "Correct! You somehow swallowed the cactus and survived!";
+                snake.wrongStreak = 0;
+            }
             
-            correctResponse.SetActive(true);
-            snake.wrongStreak = 0;
-            snake.RemoveSegment();
             
         }
         else
         {
             /*managerAudioSource.clip = incorrectSound;
             managerAudioSource.Play();*/
-            
-            incorrectResponse.SetActive(true);
-            snake.wrongStreak++;
-            incorrectText.text = $"Incorrect, you choked on the food... You answered {snake.wrongStreak} questions wrong in a row and you gain {snake.wrongStreak} segments.";
-            snake.AddSegment();
+
+            if (!cactusQuestion)
+            {
+                incorrectResponse.SetActive(true);
+                snake.wrongStreak++;
+                incorrectText.text = $"Incorrect, you choked on the food... You answered {snake.wrongStreak} questions wrong in a row and you gain {snake.wrongStreak} segments.";
+                snake.AddSegment();
+            }
+            else
+            {
+                incorrectResponse.SetActive(true);
+                incorrectText.text = $"Incorrect, you choked on the cactus you lose!";
+                snake.GameOver();              
+            }
         }
     }
     

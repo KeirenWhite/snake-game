@@ -277,7 +277,7 @@ public class Snake : MonoBehaviour
         }
     }
 
-    private void GameOver()
+    public void GameOver()
     {
         isAlive = false;
     }
@@ -368,8 +368,17 @@ public class Snake : MonoBehaviour
 
                     if (item.transform.position == newPosition)
                     {
-                        GameOver();
-                        break;
+                        var spriteRenderer = item.GetComponentInChildren<SpriteRenderer>();
+                        if (spriteRenderer != null)
+                        {
+                            spriteRenderer.sprite = null;
+                        }
+
+                        activeCacti.Remove(item);
+                        questionManager.cactusQuestion = true;
+                        questionManager.PauseAll(true);
+                        questionManager.questionPanel.SetActive(true);
+                        questionManager.GetQuestion();
                     }
                 }
             }
