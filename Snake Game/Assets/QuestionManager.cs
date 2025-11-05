@@ -27,6 +27,7 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private GameObject incorrectResponse;
     public TMP_Text incorrectText;
     public TMP_Text correctText;
+    public TMP_Text quizProgressText;
     
 
     [Header("Questions")]
@@ -34,7 +35,10 @@ public class QuestionManager : MonoBehaviour
     private Question currentQuestion;
     private int questionIndex = 0;
 
-    public bool cactusQuestion = false;
+    [HideInInspector] public bool cactusQuestion = false;
+    [HideInInspector] public int allCorrect = 0;
+    [HideInInspector] public int allAnswered = 0;
+    [HideInInspector] public int quizProgress = 0;
 
     private void Awake()
     {
@@ -54,6 +58,10 @@ public class QuestionManager : MonoBehaviour
         option2.onClick.AddListener(delegate { OptionClick(1); });
         option3.onClick.AddListener(delegate { OptionClick(2); });
         option4.onClick.AddListener(delegate { OptionClick(3); });
+    }
+    private void Start()
+    {
+        UpdateProgressText();
     }
 
     public void GetQuestion()
@@ -84,6 +92,10 @@ public class QuestionManager : MonoBehaviour
             {
                 correctResponse.SetActive(true);
                 snake.wrongStreak = 0;
+                allAnswered++;
+                allCorrect++;
+                quizProgress++;
+                UpdateProgressText();
                 correctText.text = "Correct! You lost 1 segment!";
                 snake.RemoveSegment();
             }
@@ -93,6 +105,8 @@ public class QuestionManager : MonoBehaviour
                 correctResponse.SetActive(true);
                 correctText.text = "Correct! You somehow swallowed the cactus and survived!";
                 snake.wrongStreak = 0;
+                allAnswered++;
+                allCorrect++;
             }
             
             
@@ -106,12 +120,14 @@ public class QuestionManager : MonoBehaviour
             {
                 incorrectResponse.SetActive(true);
                 snake.wrongStreak++;
+                allAnswered++;
                 incorrectText.text = $"Incorrect, you choked on the food... You answered {snake.wrongStreak} questions wrong in a row and you gain {snake.wrongStreak} segments.";
                 snake.AddSegment();
             }
             else
             {
                 incorrectResponse.SetActive(true);
+                allAnswered++;
                 incorrectText.text = $"Incorrect, you choked on the cactus you lose!";
                 snake.GameOver();              
             }
@@ -135,6 +151,11 @@ public class QuestionManager : MonoBehaviour
         questionUI.SetActive(false);
         StartCoroutine(WaitTime());
         
+    }
+
+    public void UpdateProgressText()
+    {
+        quizProgressText.text = $"{quizProgress}/20";
     }
 
     public void PauseAll(bool pause)

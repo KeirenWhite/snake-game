@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afec826d2646f964389418c369e5e560, type: 3}
+  m_Name: TestQuestion4
+  m_EditorClassIdentifier: 
+  questionText: What do you call a cow with 3 legs?
+  correctOption: 2
+  optionText1: Ground Beef
+  optionText2: Tripod
+  optionText3: Lean Beef
+  optionText4: All of the above
